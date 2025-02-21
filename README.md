@@ -1,4 +1,4 @@
-# projetoAula
+# Projeto Aula
 
 git clone https://github.com/YujiGM/projetoAula.git
 
