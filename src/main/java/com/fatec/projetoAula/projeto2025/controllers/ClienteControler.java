@@ -16,6 +16,6 @@ public class ClienteControler {
     //http://localhost:8080/api/cliente/cadastrarCliente -> POST
     @PostMapping("/cadastrarCliente")
     public String cadastrarCliente(@RequestBody Cliente cliente){      
-        return "O cliente "+cliente.getNome()+" e idade "+cliente.getIdade()+" foi criado.";
+        return "O cliente "+cliente.getNome()+" e idade "+cliente.getIdade()+" foi criado.O seu endereço é "+cliente.getEndereco();
     }
 }
