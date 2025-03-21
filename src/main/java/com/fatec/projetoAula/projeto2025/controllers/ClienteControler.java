@@ -3,6 +3,7 @@ package com.fatec.projetoAula.projeto2025.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,13 +13,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fatec.projetoAula.projeto2025.controllers.entities.Cliente;
+import com.fatec.projetoAula.projeto2025.domain.cliente.ClienteService;
+import com.fatec.projetoAula.projeto2025.entities.Cliente;
 
 @RestController
 
 @RequestMapping("/api/cliente")
 
 public class ClienteControler {
+    @Autowired
+    private ClienteService clienteService;
 
     private final List<Cliente> clientes = new ArrayList<>();
     private Integer idCount = 1;
@@ -28,18 +32,15 @@ public class ClienteControler {
     
     //http://localhost:8080/api/cliente/cadastrarCliente -> POST
     @PostMapping("/cadastrarCliente")
-    public String cadastrarCliente(@RequestBody Cliente cliente){      
-        cliente.setId(idCount++);
-        clientes.add(cliente);
-
-        return "O cliente "+cliente.getNome()+" e idade "+cliente.getIdade()+" foi criado.O seu endereço é "+cliente.getEndereco();
+    public Cliente cadastrarCliente(@RequestBody Cliente cliente){      
+        return clienteService.cadastrarCliente(cliente);
 
     }
 
     //http://localhost:8080/api/cliente/listarCLientes -> GET  
     @GetMapping("/listarClientes")
     public List<Cliente> listarClientes(){
-        return clientes;
+        return clienteService.listarCLientes();
     }
 
     //http://localhost:8080/api/cliente//deletarCliente/{id} -> Delete      
