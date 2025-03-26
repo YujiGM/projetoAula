@@ -1,7 +1,9 @@
 package com.fatec.projetoAula.projeto2025.domain.cliente;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.apache.commons.lang3.ObjectUtils.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +20,16 @@ public class ClienteService {
     
     public Cliente cadastrarCliente(Cliente cliente){
         var cli = new Cliente();
-        cli.setId(0);
-        cli.setNome("ddd");
-        cli.setIdade(1);
-        cli.setEndereco("sss");
+        cli.setId(null);
+        cli.setNome("Yuji");
+        cli.setIdade(20);
+        cli.setEndereco("Rua Fatec");
 
         return clienteRepository.save(cli);
+    }
+
+    public Optional<Cliente> getClientePorId(Integer id){
+        return clienteRepository.findById(id);
     }
 
 }

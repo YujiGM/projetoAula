@@ -2,6 +2,7 @@ package com.fatec.projetoAula.projeto2025.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -58,14 +59,8 @@ public class ClienteControler {
     }
 
     @GetMapping("/getClienteId/{id}")
-    public String clienteId(@PathVariable("id") Integer id){
-        for(Cliente cliente : clientes){
-            if(cliente.getId().equals(id)){
-                return "O cliente "+cliente.getNome()+" e idade "+cliente.getIdade()+" foi achado.O seu endereço é "+cliente.getEndereco();
-
-            }
-        }
-        return "Não existe cliente com id: "+ id;
+    public Optional<Cliente> getClientePorId(@PathVariable Integer id){
+       return clienteService.getClientePorId(id);
     }
 
     @PutMapping("/putClienteId/{id}")
