@@ -12,7 +12,7 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;  
     
-    public List<Cliente> listarCLientes(){
+    public List<Cliente> listarCLientes(Cliente idCliente){
         return clienteRepository.findAll();
     }
 
