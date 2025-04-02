@@ -14,17 +14,17 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public List<Cliente> listarClientes() {
+    public List<Cliente> listarCliente() {
         return clienteRepository.findAll();
     }
 
-    public Cliente criarCliente(Cliente cliente) {
+    public Cliente cadastrarCliente(Cliente cliente) {
         cliente.setId(null);
         return clienteRepository.save(cliente);
     }
 
     public boolean atualizarCliente(Integer id, Cliente clienteAtualizado) {
-        Optional<Cliente> clienteOptional = buscarClientePorId(id);
+        Optional<Cliente> clienteOptional = getClientePorId(id);
         if (clienteOptional.isPresent()) {
             Cliente cliente = clienteOptional.get();
             cliente.setNome(clienteAtualizado.getNome());
@@ -44,7 +44,7 @@ public class ClienteService {
         return false;
     }
 
-    public Optional<Cliente> buscarClientePorId(Integer id) {
+    public Optional<Cliente> getClientePorId(Integer id) {
         return clienteRepository.findById(id);
     }
 }

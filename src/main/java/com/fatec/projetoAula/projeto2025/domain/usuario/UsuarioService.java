@@ -13,17 +13,17 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public List<Usuario> listarUsuarios() {
+    public List<Usuario> listarUsuario() {
         return usuarioRepository.findAll();
     }
 
-    public Usuario criarUsuario(Usuario usuario) {
+    public Usuario cadastrarUsuario(Usuario usuario) {
         usuario.setId(null);
         return usuarioRepository.save(usuario);
     }
 
     public boolean atualizarUsuario(Integer id, Usuario usuarioAtualizado) {
-        Optional<Usuario> usuarioOptional = buscarUsuarioPorId(id);
+        Optional<Usuario> usuarioOptional = getUsuarioPorId(id);
         if (usuarioOptional.isPresent()) {
             Usuario usuario = usuarioOptional.get();
             usuario.setNome(usuarioAtualizado.getNome());
@@ -42,7 +42,7 @@ public class UsuarioService {
         return false;
     }
 
-    public Optional<Usuario> buscarUsuarioPorId(Integer id) {
+    public Optional<Usuario> getUsuarioPorId(Integer id) {
         return usuarioRepository.findById(id);
     }
 }
