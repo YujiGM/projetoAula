@@ -10,6 +10,7 @@ import com.fatec.projetoAula.projeto2025.entities.Usuario;
 
 @Service
 public class UsuarioService {
+    
     @Autowired
     private UsuarioRepository usuarioRepository;
 
@@ -23,12 +24,20 @@ public class UsuarioService {
     }
 
     public boolean atualizarUsuario(Integer id, Usuario usuarioAtualizado) {
-        Optional<Usuario> usuarioOptional = getUsuarioPorId(id);
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+        
         if (usuarioOptional.isPresent()) {
-            Usuario usuario = usuarioOptional.get();
-            usuario.setNome(usuarioAtualizado.getNome());
-            // Adicione outros campos que precisam ser atualizados
-            usuarioRepository.save(usuario);
+            Usuario usuarioExistente = usuarioOptional.get();
+            
+            if (usuarioAtualizado.getNome() != null) {
+                usuarioExistente.setNome(usuarioAtualizado.getNome());
+            }
+            
+            if (usuarioAtualizado.getEmail() != null) {
+                usuarioExistente.setEmail(usuarioAtualizado.getEmail());
+            }
+            
+            usuarioRepository.save(usuarioExistente);
             return true;
         }
         return false;
