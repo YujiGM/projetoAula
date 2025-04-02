@@ -13,23 +13,38 @@ import com.fatec.projetoAula.projeto2025.entities.Cliente;
 public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
-    
-    public List<Cliente> listarCliente(){
-            return clienteRepository.findAll();
-        }
-    
-    public Cliente cadastrarCliente(Cliente cliente){
-        var cli = new Cliente();
-        cli.setId(null);
-        cli.setNome("Yuji");
-        cli.setIdade(20);
-        cli.setEndereco("Rua Fatec");
 
-        return clienteRepository.save(cli);
+    public List<Cliente> listarClientes() {
+        return clienteRepository.findAll();
     }
 
-    public Optional<Cliente> getClientePorId(Integer id){
+    public Cliente criarCliente(Cliente cliente) {
+        cliente.setId(null);
+        return clienteRepository.save(cliente);
+    }
+
+    public boolean atualizarCliente(Long id, Cliente clienteAtualizado) {
+        Optional<Cliente> clienteOptional = buscarClientePorId(id);
+        if (clienteOptional.isPresent()) {
+            Cliente cliente = clienteOptional.get();
+            cliente.setNome(clienteAtualizado.getNome());
+            cliente.setIdade(clienteAtualizado.getIdade());
+            cliente.setEndereco(clienteAtualizado.getEndereco());
+            clienteRepository.save(cliente);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deletarCliente(Long id) {
+        if (clienteRepository.existsById(id)) {
+            clienteRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    public Optional<Cliente> buscarClientePorId(Long id) {
         return clienteRepository.findById(id);
     }
-
 }
