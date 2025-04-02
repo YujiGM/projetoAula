@@ -23,7 +23,7 @@ public class ClienteService {
         return clienteRepository.save(cliente);
     }
 
-    public boolean atualizarCliente(Long id, Cliente clienteAtualizado) {
+    public boolean atualizarCliente(Integer id, Cliente clienteAtualizado) {
         Optional<Cliente> clienteOptional = buscarClientePorId(id);
         if (clienteOptional.isPresent()) {
             Cliente cliente = clienteOptional.get();
@@ -36,7 +36,7 @@ public class ClienteService {
         return false;
     }
 
-    public boolean deletarCliente(Long id) {
+    public boolean deletarCliente(Integer id) {
         if (clienteRepository.existsById(id)) {
             clienteRepository.deleteById(id);
             return true;
@@ -44,7 +44,7 @@ public class ClienteService {
         return false;
     }
 
-    public Optional<Cliente> buscarClientePorId(Long id) {
+    public Optional<Cliente> buscarClientePorId(Integer id) {
         return clienteRepository.findById(id);
     }
 }
