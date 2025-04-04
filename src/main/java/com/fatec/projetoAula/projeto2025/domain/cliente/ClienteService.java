@@ -41,6 +41,7 @@ public class ClienteService {
             clienteRepository.deleteById(id);
             return true;
         }
+        
         return false;
     }
 

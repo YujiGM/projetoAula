@@ -1,9 +1,9 @@
 package com.fatec.projetoAula.projeto2025.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,35 +24,37 @@ public class UsuarioControler {
     private UsuarioService usuarioService;
 
     @PostMapping("/cadastrarUsuario")
-    public Usuario cadastrarUsuario(@RequestBody Usuario usuario) {      
+    public ResponseEntity<Usuario> cadastrarUsuario(@RequestBody Usuario usuario) {      
         return usuarioService.cadastrarUsuario(usuario);
     }
 
     @GetMapping("/listarUsuarios")
-    public List<Usuario> listarUsuarios() {
-        return usuarioService.listarUsuario();
+    public ResponseEntity<List<Usuario>> listarUsuarios() {
+        List<Usuario> usuarios = usuarioService.listarUsuario();
+        return ResponseEntity.ok(usuarios);
     }
 
     @DeleteMapping("/deletarUsuario/{id}")
-    public String deletarUsuario(@PathVariable("id") Integer id) {
-        boolean deletado = usuarioService.deletarUsuario(id);
-        if (deletado) {
-            return "Usuário removido com sucesso";
+    public ResponseEntity<String> deletarUsuario(@PathVariable("id") Integer id) {
+        ResponseEntity<Void> response = usuarioService.deletarUsuario(id);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return ResponseEntity.ok("Usuário removido com sucesso");
         }
-        return "Não existe usuário com id: " + id;
+        return ResponseEntity.status(response.getStatusCode()).body("Não existe usuário com id: " + id);
     }
 
     @GetMapping("/getUsuarioId/{id}")
-    public Optional<Usuario> getUsuarioPorId(@PathVariable Integer id) {
-        return usuarioService.getUsuarioPorId(id);
+    public ResponseEntity<Usuario> getUsuarioPorId(@PathVariable Integer id) {
+        ResponseEntity<Usuario> response = usuarioService.getUsuarioPorId(id);
+        return response; // O método já retorna um ResponseEntity
     }
 
     @PutMapping("/putUsuarioId/{id}")
-    public String usuarioPut(@PathVariable("id") Integer id, @RequestBody Usuario usuarioAtualizado) {
-        boolean atualizado = usuarioService.atualizarUsuario(id, usuarioAtualizado);
-        if (atualizado) {
-            return "Usuário atualizado com sucesso!";
+    public ResponseEntity<String> usuarioPut(@PathVariable("id") Integer id, @RequestBody Usuario usuarioAtualizado) {
+        ResponseEntity<Boolean> response = usuarioService.atualizarUsuario(id, usuarioAtualizado);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return ResponseEntity.ok("Usuário atualizado com sucesso!");
         }
-        return "Não existe usuário com id: " + id;
+        return ResponseEntity.status(response.getStatusCode()).body("Não existe usuário com id: " + id);
     }
 }

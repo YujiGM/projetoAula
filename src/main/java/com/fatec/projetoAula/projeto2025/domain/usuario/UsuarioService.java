@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.fatec.projetoAula.projeto2025.entities.Usuario;
@@ -18,12 +20,13 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public Usuario cadastrarUsuario(Usuario usuario) {
+    public ResponseEntity<Usuario> cadastrarUsuario(Usuario usuario) {
         usuario.setId(null);
-        return usuarioRepository.save(usuario);
+        Usuario usuarioSalvo = usuarioRepository.save(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioSalvo);
     }
 
-    public boolean atualizarUsuario(Integer id, Usuario usuarioAtualizado) {
+    public ResponseEntity<Boolean> atualizarUsuario(Integer id, Usuario usuarioAtualizado) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
         
         if (usuarioOptional.isPresent()) {
@@ -38,20 +41,24 @@ public class UsuarioService {
             }
             
             usuarioRepository.save(usuarioExistente);
-            return true;
+            return ResponseEntity.ok(true);
         }
-        return false;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
     }
 
-    public boolean deletarUsuario(Integer id) {
+    public ResponseEntity<Void> deletarUsuario(Integer id) {
         if (usuarioRepository.existsById(id)) {
             usuarioRepository.deleteById(id);
-            return true;
+            return ResponseEntity.noContent().build(); 
         }
-        return false;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    public Optional<Usuario> getUsuarioPorId(Integer id) {
-        return usuarioRepository.findById(id);
+    public ResponseEntity<Usuario> getUsuarioPorId(Integer id) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+        if (usuarioOptional.isPresent()) {
+            return ResponseEntity.ok(usuarioOptional.get());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); 
     }
 }
