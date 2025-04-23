@@ -49,6 +49,12 @@ public class UsuarioControler {
         return response; // O método já retorna um ResponseEntity
     }
 
+    /*@GetMapping("/{id}")
+    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
+        Usuario user = usuarioService.buscarPorId(id);
+        return ResponseEntity.ok(user);
+    }*/
+
     @PutMapping("/putUsuarioId/{id}")
     public ResponseEntity<String> usuarioPut(@PathVariable("id") Integer id, @RequestBody Usuario usuarioAtualizado) {
         ResponseEntity<Boolean> response = usuarioService.atualizarUsuario(id, usuarioAtualizado);
